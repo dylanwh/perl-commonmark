@@ -1,6 +1,6 @@
 =head1 NAME
 
-CommonMark::Node - Node of the CommonMark parse tree
+CommonMarkGFM::Node - Node of the CommonMarkGFM parse tree
 
 =head1 SYNOPSIS
 
@@ -13,9 +13,9 @@ CommonMark::Node - Node of the CommonMark parse tree
     my $level     = $header->get_header_level;
     my $paragraph = $header->next;
 
-    my $link = CommonMark::Node->new(CommonMark::NODE_LINK);
+    my $link = CommonMarkGFM::Node->new(CommonMarkGFM::NODE_LINK);
     $link->set_url('http://example.com/');
-    my $text = CommonMark::Node->new(CommonMark::NODE_TEXT);
+    my $text = CommonMarkGFM::Node->new(CommonMarkGFM::NODE_TEXT);
     $text->set_literal('link text');
     $link->append_child($link_text);
     $paragraph->append_child($link);
@@ -25,14 +25,14 @@ CommonMark::Node - Node of the CommonMark parse tree
 
 =head1 DESCRIPTION
 
-C<CommonMark::Node> represents a node of the parse tree.
+C<CommonMarkGFM::Node> represents a node of the parse tree.
 
 =head2 new
 
-   my $node = CommonMark::Node->new($type);
+   my $node = CommonMarkGFM::Node->new($type);
 
 Creates a new node of type C<$type>. See L</"Node types"> for a list of
-types. Note that the L<node creation functions|CommonMark/"Node creation">
+types. Note that the L<node creation functions|CommonMarkGFM/"Node creation">
 provide a more powerful interface.
 
 =head2 Rendering
@@ -47,7 +47,7 @@ provide a more powerful interface.
     );
 
 Convenience function to render documents. Supported formats are C<'html'>,
-C<'xml'>, C<'man'>, C<'commonmark'>, and C<'latex'>.
+C<'xml'>, C<'man'>, C<'CommonMarkGFM'>, and C<'latex'>.
 
 C<sourcepos>, C<hardbreaks>, C<nobreaks>, and C<safe> enable the respective
 render options.
@@ -57,22 +57,22 @@ C<width> is passed to renderers that support it.
     my $html  = $node->render_html( [$options] )
     my $xml   = $node->render_xml( [$options] )
     my $man   = $node->render_man( [$options], [$width] )
-    my $md    = $node->render_commonmark( [$options], [$width] )
+    my $md    = $node->render_CommonMarkGFM( [$options], [$width] )
     my $latex = $node->render_latex( [$options], [$width] )
 
 These methods render the contents of the node in the respective format.
 
 C<$options> is a bit field created by ORing the following constants:
 
-    CommonMark::OPT_DEFAULT => 0
-    CommonMark::OPT_SOURCEPOS
-    CommonMark::OPT_HARDBREAKS
-    CommonMark::OPT_SAFE
-    CommonMark::OPT_NOBREAKS
+    CommonMarkGFM::OPT_DEFAULT => 0
+    CommonMarkGFM::OPT_SOURCEPOS
+    CommonMarkGFM::OPT_HARDBREAKS
+    CommonMarkGFM::OPT_SAFE
+    CommonMarkGFM::OPT_NOBREAKS
 
-Render options can be imported from L<CommonMark> with tag C<opt>.
+Render options can be imported from L<CommonMarkGFM> with tag C<opt>.
 
-    use CommonMark qw(:opt);
+    use CommonMarkGFM qw(:opt);
 
 C<$options> may be omitted and defaults to C<OPT_DEFAULT>. See the
 documentation of I<libcmark> for more details.
@@ -142,7 +142,7 @@ types, and list delimiters.
 
     my $iterator = $node->iterator;
 
-Creates a new L<CommonMark::Iterator> to walk through the descendants of
+Creates a new L<CommonMarkGFM::Iterator> to walk through the descendants of
 the node.
 
     my $next   = $node->next;
@@ -178,51 +178,51 @@ These methods may die on failure.
 
 =head3 Node types
 
-    CommonMark::NODE_NONE => 0
-    CommonMark::NODE_DOCUMENT
-    CommonMark::NODE_BLOCK_QUOTE
-    CommonMark::NODE_LIST
-    CommonMark::NODE_ITEM
-    CommonMark::NODE_CODE_BLOCK
-    CommonMark::NODE_HTML_BLOCK
-    CommonMark::NODE_CUSTOM_BLOCK
-    CommonMark::NODE_PARAGRAPH
-    CommonMark::NODE_HEADING
-    CommonMark::NODE_THEMATIC_BREAK
-    CommonMark::NODE_TEXT
-    CommonMark::NODE_SOFTBREAK
-    CommonMark::NODE_LINEBREAK
-    CommonMark::NODE_CODE
-    CommonMark::NODE_HTML_INLINE
-    CommonMark::NODE_CUSTOM_INLINE
-    CommonMark::NODE_EMPH
-    CommonMark::NODE_STRONG
-    CommonMark::NODE_LINK
-    CommonMark::NODE_IMAGE
+    CommonMarkGFM::NODE_NONE => 0
+    CommonMarkGFM::NODE_DOCUMENT
+    CommonMarkGFM::NODE_BLOCK_QUOTE
+    CommonMarkGFM::NODE_LIST
+    CommonMarkGFM::NODE_ITEM
+    CommonMarkGFM::NODE_CODE_BLOCK
+    CommonMarkGFM::NODE_HTML_BLOCK
+    CommonMarkGFM::NODE_CUSTOM_BLOCK
+    CommonMarkGFM::NODE_PARAGRAPH
+    CommonMarkGFM::NODE_HEADING
+    CommonMarkGFM::NODE_THEMATIC_BREAK
+    CommonMarkGFM::NODE_TEXT
+    CommonMarkGFM::NODE_SOFTBREAK
+    CommonMarkGFM::NODE_LINEBREAK
+    CommonMarkGFM::NODE_CODE
+    CommonMarkGFM::NODE_HTML_INLINE
+    CommonMarkGFM::NODE_CUSTOM_INLINE
+    CommonMarkGFM::NODE_EMPH
+    CommonMarkGFM::NODE_STRONG
+    CommonMarkGFM::NODE_LINK
+    CommonMarkGFM::NODE_IMAGE
 
-Node types can be imported from L<CommonMark> with tag C<node>.
+Node types can be imported from L<CommonMarkGFM> with tag C<node>.
 
-    use CommonMark qw(:node);
+    use CommonMarkGFM qw(:node);
 
 =head3 List types
 
-    CommonMark::NO_LIST => 0
-    CommonMark::BULLET_LIST
-    CommonMark::ORDERED_LIST
+    CommonMarkGFM::NO_LIST => 0
+    CommonMarkGFM::BULLET_LIST
+    CommonMarkGFM::ORDERED_LIST
 
-List types can be imported from L<CommonMark> with tag C<list>.
+List types can be imported from L<CommonMarkGFM> with tag C<list>.
 
-    use CommonMark qw(:list);
+    use CommonMarkGFM qw(:list);
 
 =head3 Delimiter types for ordered lists
 
-    CommonMark::NO_DELIM => 0
-    CommonMark::PERIOD_DELIM
-    CommonMark::PAREN_DELIM
+    CommonMarkGFM::NO_DELIM => 0
+    CommonMarkGFM::PERIOD_DELIM
+    CommonMarkGFM::PAREN_DELIM
 
-Delimiter types can be imported from L<CommonMark> with tag C<delim>.
+Delimiter types can be imported from L<CommonMarkGFM> with tag C<delim>.
 
-    use CommonMark qw(:delim);
+    use CommonMarkGFM qw(:delim);
 
 =head1 COPYRIGHT
 

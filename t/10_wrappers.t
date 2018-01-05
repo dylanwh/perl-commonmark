@@ -4,7 +4,7 @@ use warnings;
 use Test::More tests => 6;
 
 BEGIN {
-    use_ok('CommonMark', ':opt');
+    use_ok('CommonMarkGFM', ':opt');
 }
 
 {
@@ -12,11 +12,11 @@ BEGIN {
     my $file;
 
     open($file, '<', $filename) or die("$filename: $!");
-    my $doc1 = CommonMark->parse_file($file);
+    my $doc1 = CommonMarkGFM->parse_file($file);
     close($file);
 
     open($file, '<', $filename) or die("$filename: $!");
-    my $doc2 = CommonMark->parse(file => $file);
+    my $doc2 = CommonMarkGFM->parse(file => $file);
     close($file);
 
     is($doc2->render_html, $doc1->render_html, 'parse works with file');
@@ -24,7 +24,7 @@ BEGIN {
 
 {
     my $md  = q{Pretty "smart" -- don't you think?};
-    my $doc = CommonMark->parse(string => $md, smart => 1);
+    my $doc = CommonMarkGFM->parse(string => $md, smart => 1);
     my $expected_html = <<EOF;
 <p>Pretty \x{201C}smart\x{201D} \x{2013} don\x{2019}t you think?</p>
 EOF
@@ -36,7 +36,7 @@ EOF
 }
 
 {
-    my $all_opts = CommonMark::_extract_opts({
+    my $all_opts = CommonMarkGFM::_extract_opts({
         sourcepos     => 1,
         hardbreaks    => 'yes',
         safe          => 100,
@@ -54,7 +54,7 @@ EOF
                  | OPT_SMART;
     is($all_opts, $expected, 'extracting options works');
 
-    my $no_opts = CommonMark::_extract_opts({
+    my $no_opts = CommonMarkGFM::_extract_opts({
         sourcepos     => undef,
         hardbreaks    => 0,
         safe          => -0.0,

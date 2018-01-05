@@ -5,14 +5,14 @@ use Symbol;
 use Test::More tests => 5;
 
 BEGIN {
-    use_ok('CommonMark', ':node');
+    use_ok('CommonMarkGFM', ':node');
 }
 
 my $md = <<'EOF';
 normal, *emph*, **strong**
 EOF
 
-my $doc       = CommonMark->parse_document($md);
+my $doc       = CommonMarkGFM->parse_document($md);
 my $paragraph = $doc->first_child;
 my $text      = $paragraph->first_child;
 my $emph      = $text->next;
@@ -22,7 +22,7 @@ my $space     = $strong->first_child->parent->previous;
 my $expected_html = $doc->render_html;
 $doc = undef;
 
-my $result = CommonMark::Node->new(NODE_DOCUMENT);
+my $result = CommonMarkGFM::Node->new(NODE_DOCUMENT);
 $text->unlink;
 $strong->unlink;
 $result->append_child($paragraph);

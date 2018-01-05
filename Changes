@@ -1,4 +1,4 @@
-Revision history for Perl module CommonMark
+Revision history for Perl module CommonMarkGFM
 
 0.280301  2017-10-24
     - Add support for NOBREAKS option
@@ -40,7 +40,7 @@ Revision history for Perl module CommonMark
       BREAKING CHANGE: The renderers now return normal Perl strings.
       Use utf8::encode before printing the result to binary streams.
     - $node->render convenience method
-    - Additional parser options for CommonMark->parse
+    - Additional parser options for CommonMarkGFM->parse
     - Fix and improve check for libcmark
 
 0.210000  2015-07-27
@@ -51,7 +51,7 @@ Revision history for Perl module CommonMark
 0.180300  2015-04-02
     - Require libcmark 0.18.3
     - Add options parameter to markdown_to_html
-    - Add support to render as Commonmark
+    - Add support to render as CommonMarkGFM
 
 0.1802  2015-03-16
     - Fix build with Perl <= 5.14.

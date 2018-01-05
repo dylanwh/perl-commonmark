@@ -16,7 +16,7 @@ install:
   - mingw32-make install
 
   # Install Perl prereqs
-  - cd C:\projects\perl-commonmark
+  - cd C:\projects\perl-CommonMarkGFM
   - ppm install dmake
   - ppm install Devel-CheckLib
 

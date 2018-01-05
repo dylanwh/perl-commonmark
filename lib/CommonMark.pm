@@ -6,10 +6,10 @@ use XSLoader;
 
 BEGIN {
     our $VERSION = '0.280301';
-    XSLoader::load('CommonMark', $VERSION);
+    XSLoader::load('CommonMarkGFM', $VERSION);
 }
 
-package CommonMark;
+package CommonMarkGFM;
 
 use Exporter 'import';
 our %EXPORT_TAGS = (
@@ -121,20 +121,20 @@ sub _extract_opts {
 
 sub create_document {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_DOCUMENT);
+    my $node = CommonMarkGFM::Node->new(NODE_DOCUMENT);
     return _add_children($node, \%opts);
 }
 
 sub create_block_quote {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_BLOCK_QUOTE);
+    my $node = CommonMarkGFM::Node->new(NODE_BLOCK_QUOTE);
     return _add_children($node, \%opts);
 }
 
 sub create_list {
     my (undef, %opts) = @_;
 
-    my $node = CommonMark::Node->new(NODE_LIST);
+    my $node = CommonMarkGFM::Node->new(NODE_LIST);
 
     my ($type, $delim, $start, $tight)
         = @opts{ qw(type delim start tight) };
@@ -149,14 +149,14 @@ sub create_list {
 
 sub create_item {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_ITEM);
+    my $node = CommonMarkGFM::Node->new(NODE_ITEM);
     return _add_children($node, \%opts);
 }
 
 sub create_code_block {
     my (undef, %opts) = @_;
 
-    my $node = CommonMark::Node->new(NODE_CODE_BLOCK);
+    my $node = CommonMarkGFM::Node->new(NODE_CODE_BLOCK);
 
     my $fence_info = $opts{fence_info};
     $node->set_fence_info($fence_info) if defined($fence_info);
@@ -166,7 +166,7 @@ sub create_code_block {
 
 sub create_html_block {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_HTML);
+    my $node = CommonMarkGFM::Node->new(NODE_HTML);
     return _add_literal($node, \%opts);
 }
 
@@ -174,14 +174,14 @@ sub create_html { &create_html_block; }
 
 sub create_paragraph {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_PARAGRAPH);
+    my $node = CommonMarkGFM::Node->new(NODE_PARAGRAPH);
     return _add_children_or_text($node, \%opts);
 }
 
 sub create_heading {
     my (undef, %opts) = @_;
 
-    my $node = CommonMark::Node->new(NODE_HEADER);
+    my $node = CommonMarkGFM::Node->new(NODE_HEADER);
 
     my $level = $opts{level};
     $node->set_header_level($level) if defined($level);
@@ -192,34 +192,34 @@ sub create_heading {
 sub create_header { &create_heading; }
 
 sub create_thematic_break {
-    return CommonMark::Node->new(NODE_HRULE);
+    return CommonMarkGFM::Node->new(NODE_HRULE);
 }
 
 sub create_hrule { &create_thematic_break; }
 
 sub create_text {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_TEXT);
+    my $node = CommonMarkGFM::Node->new(NODE_TEXT);
     return _add_literal($node, \%opts);
 }
 
 sub create_softbreak {
-    return CommonMark::Node->new(NODE_SOFTBREAK);
+    return CommonMarkGFM::Node->new(NODE_SOFTBREAK);
 }
 
 sub create_linebreak {
-    return CommonMark::Node->new(NODE_LINEBREAK);
+    return CommonMarkGFM::Node->new(NODE_LINEBREAK);
 }
 
 sub create_code {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_CODE);
+    my $node = CommonMarkGFM::Node->new(NODE_CODE);
     return _add_literal($node, \%opts);
 }
 
 sub create_html_inline {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_INLINE_HTML);
+    my $node = CommonMarkGFM::Node->new(NODE_INLINE_HTML);
     return _add_literal($node, \%opts);
 }
 
@@ -227,37 +227,37 @@ sub create_inline_html { &create_html_inline; }
 
 sub create_emph {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_EMPH);
+    my $node = CommonMarkGFM::Node->new(NODE_EMPH);
     return _add_children_or_text($node, \%opts);
 }
 
 sub create_strong {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_STRONG);
+    my $node = CommonMarkGFM::Node->new(NODE_STRONG);
     return _add_children_or_text($node, \%opts);
 }
 
 sub create_link {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_LINK);
+    my $node = CommonMarkGFM::Node->new(NODE_LINK);
     return _add_link_opts($node, \%opts);
 }
 
 sub create_image {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_IMAGE);
+    my $node = CommonMarkGFM::Node->new(NODE_IMAGE);
     return _add_link_opts($node, \%opts);
 }
 
 sub create_custom_block {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_CUSTOM_BLOCK);
+    my $node = CommonMarkGFM::Node->new(NODE_CUSTOM_BLOCK);
     return _add_custom_opts($node, \%opts);
 }
 
 sub create_custom_inline {
     my (undef, %opts) = @_;
-    my $node = CommonMark::Node->new(NODE_CUSTOM_INLINE);
+    my $node = CommonMarkGFM::Node->new(NODE_CUSTOM_INLINE);
     return _add_custom_opts($node, \%opts);
 }
 
@@ -327,7 +327,7 @@ sub _add_custom_opts {
     return _add_children_or_text($node, $opts);
 }
 
-package CommonMark::Node;
+package CommonMarkGFM::Node;
 
 sub render {
     my ($self, %opts) = @_;
@@ -337,12 +337,12 @@ sub render {
         if !defined($format);
     my $method = "render_$format";
 
-    my $render_opts = CommonMark::_extract_opts(\%opts);
+    my $render_opts = CommonMarkGFM::_extract_opts(\%opts);
 
     if ($format =~ /^(html|xml)\z/) {
         return $self->$method($render_opts);
     }
-    if ($format =~ /^(commonmark|latex|man)\z/) {
+    if ($format =~ /^(CommonMarkGFM|latex|man)\z/) {
         return $self->$method($render_opts, $opts{width});
     }
 

@@ -1,5 +1,5 @@
 ---
-abstract: 'Interface to the CommonMark C library'
+abstract: 'Interface to the CommonMarkGFM C library'
 author:
   - 'Nick Wellnhofer <wellnhofer@aevum.de>'
 build_requires:
@@ -14,11 +14,11 @@ license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
-name: CommonMark
+name: CommonMarkGFM
 requires:
   perl: '5.008'
 resources:
-  bugtracker: https://github.com/nwellnhof/perl-commonmark/issues
-  repository: https://github.com/nwellnhof/perl-commonmark.git
+  bugtracker: https://github.com/nwellnhof/perl-CommonMarkGFM/issues
+  repository: https://github.com/nwellnhof/perl-CommonMarkGFM.git
 version: '0.280301'
 x_serialization_backend: 'YAML::Tiny version 1.70'
