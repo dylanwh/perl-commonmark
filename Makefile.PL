@@ -5,30 +5,22 @@
 use strict;
 use warnings;
 
-use 5.008;
+use 5.010;
 use ExtUtils::MakeMaker;
 
-use Devel::CheckLib;
-{
-local @ARGV = @ARGV;
-unshift(@ARGV, ExtUtils::MakeMaker::_shellwords($ENV{PERL_MM_OPT} || ''))
-if $ExtUtils::MakeMaker::VERSION >= 6.73_08;
-check_lib(
-header   => 'cmark.h',
-function => 'return CMARK_VERSION >= 0x001500 ? 0 : 1;',
-) or warn('libcmark 0.21.0 or higher not found'), exit;
-}
+use Config;
+use Alien::Libcmark_gfm;
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Interface to the CommonMarkGFM C library",
   "AUTHOR" => "Nick Wellnhofer <wellnhofer\@aevum.de>",
   "CONFIGURE_REQUIRES" => {
-    "Devel::CheckLib" => 0,
+    "Alien::Libcmark_gfm" => 0,
     "ExtUtils::MakeMaker" => 0
   },
   "DISTNAME" => "CommonMarkGFM",
   "LICENSE" => "perl",
-  "MIN_PERL_VERSION" => "5.008",
+  "MIN_PERL_VERSION" => "5.010",
   "NAME" => "CommonMarkGFM",
   "PREREQ_PM" => {},
   "TEST_REQUIRES" => {
@@ -43,7 +35,8 @@ my %WriteMakefileArgs = (
 
 %WriteMakefileArgs = (
     %WriteMakefileArgs,
-    LIBS => '-lcmark',
+    CCFLAGS => Alien::Libcmark_gfm->cflags . ' ' . $Config{ccflags},
+    LIBS => [ Alien::Libcmark_gfm->libs ],
 );
 
 my %FallbackPrereqs = (
