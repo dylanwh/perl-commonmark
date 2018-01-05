@@ -1,30 +1,30 @@
 =head1 NAME
 
-CommonMarkGFM - Interface to the CommonMarkGFM C library
+CommonMark - Interface to the CommonMark C library
 
 =head1 SYNOPSIS
 
-    use CommonMarkGFM;
+    use CommonMark;
 
-    my $doc = CommonMarkGFM->parse(
+    my $doc = CommonMark->parse(
         file  => $file,
         smart => 1,
     );
 
-    my $html = CommonMarkGFM->markdown_to_html($markdown);
-    my $doc  = CommonMarkGFM->parse_file($file);
-    my $doc  = CommonMarkGFM->parse_document($markdown);
-    my $doc  = CommonMarkGFM->create_document;
+    my $html = CommonMark->markdown_to_html($markdown);
+    my $doc  = CommonMark->parse_file($file);
+    my $doc  = CommonMark->parse_document($markdown);
+    my $doc  = CommonMark->create_document;
 
 =head1 DESCRIPTION
 
-This module is a wrapper around the official CommonMarkGFM C library
+This module is a wrapper around the official CommonMark C library
 I<libcmark>. It closely follows the original API.
 
 The main module provides some entry points to parse documents. The bulk of
-features is available through L<CommonMarkGFM::Node> objects of which the
-parse tree is made. L<CommonMarkGFM::Iterator> is a useful class to walk
-through the nodes in a tree. L<CommonMarkGFM::Parser> provides a push parser
+features is available through L<CommonMark::Node> objects of which the
+parse tree is made. L<CommonMark::Iterator> is a useful class to walk
+through the nodes in a tree. L<CommonMark::Parser> provides a push parser
 interface.
 
 =head2 Installation
@@ -83,7 +83,7 @@ so you can use the standard build process as well.
 
 =head2 markdown_to_html
 
-    my $html = CommonMarkGFM->markdown_to_html( $markdown, [$options] );
+    my $html = CommonMark->markdown_to_html( $markdown, [$options] );
 
 Converts a Markdown string to HTML. C<$options> is a bit field
 containing the parser and render options. It defaults to zero
@@ -91,18 +91,18 @@ containing the parser and render options. It defaults to zero
 
 Equivalent to
 
-    my $html = CommonMarkGFM->parse_document($markdown)->render_html;
+    my $html = CommonMark->parse_document($markdown)->render_html;
 
 =head2 parse
 
-    my $doc = CommonMarkGFM->parse(
+    my $doc = CommonMark->parse(
         string        => $string,
         normalize     => $bool,    # Optional
         smart         => $bool,    # Optional
         validate_utf8 => $bool,    # Optional
     );
 
-    my $doc = CommonMarkGFM->parse(
+    my $doc = CommonMark->parse(
         file          => $handle,
         normalize     => $bool,    # Optional
         smart         => $bool,    # Optional
@@ -115,36 +115,36 @@ L</parse_document>. When given a file, calls L</parse_file>. C<normalize>,
 C<smart>, and C<validate_utf8> enable the respective
 L<parser options|/"Parser options">.
 
-Returns the L<CommonMarkGFM::Node> of the root document.
+Returns the L<CommonMark::Node> of the root document.
 
 =head2 parse_document
 
-    my $doc = CommonMarkGFM->parse_document( $markdown, [$options] )
+    my $doc = CommonMark->parse_document( $markdown, [$options] )
 
-Parses a CommonMarkGFM document from a string returning the L<CommonMarkGFM::Node>
+Parses a CommonMark document from a string returning the L<CommonMark::Node>
 of the document root. C<$options> is a bit field containing the parser
 options. It defaults to zero (C<OPT_DEFAULT>).
 
 =head2 parse_file
 
-    my $doc = CommonMarkGFM->parse_file( $file, [$options] );
+    my $doc = CommonMark->parse_file( $file, [$options] );
 
-Parses a CommonMarkGFM document from a file handle returning the
-L<CommonMarkGFM::Node> of the document root. C<$options> is a bit field
+Parses a CommonMark document from a file handle returning the
+L<CommonMark::Node> of the document root. C<$options> is a bit field
 containing the parser options. It defaults to zero (C<OPT_DEFAULT>).
 
 =head2 Parser options
 
 The parser options are a bit field created by ORing the following constants:
 
-    CommonMarkGFM::OPT_DEFAULT => 0
-    CommonMarkGFM::OPT_NORMALIZE
-    CommonMarkGFM::OPT_VALIDATE_UTF8
-    CommonMarkGFM::OPT_SMART
+    CommonMark::OPT_DEFAULT => 0
+    CommonMark::OPT_NORMALIZE
+    CommonMark::OPT_VALIDATE_UTF8
+    CommonMark::OPT_SMART
 
-Parser options can be imported from L<CommonMarkGFM> with tag C<opt>.
+Parser options can be imported from L<CommonMark> with tag C<opt>.
 
-    use CommonMarkGFM qw(:opt);
+    use CommonMark qw(:opt);
 
 C<OPT_NORMALIZE> makes sure that adjacent text nodes are merged in the parse
 tree. libcmark 0.28 or higher always normalizes text nodes.
@@ -159,82 +159,82 @@ be used if you don't trust the safety of Perl's internal UTF-8 handling.
 
 =head2 Node creation
 
-    my $document = CommonMarkGFM->create_document(
+    my $document = CommonMark->create_document(
         children => \@children,
     );
-    my $header = CommonMarkGFM->create_heading(
+    my $header = CommonMark->create_heading(
         level    => $level,
         children => \@children,
         text     => $literal,
     );
-    my $paragraph = CommonMarkGFM->create_paragraph(
+    my $paragraph = CommonMark->create_paragraph(
         children => \@children,
         text     => $literal,
     );
-    my $block_quote = CommonMarkGFM->create_block_quote(
+    my $block_quote = CommonMark->create_block_quote(
         children => \@children,
     );
-    my $list = CommonMarkGFM->create_list(
+    my $list = CommonMark->create_list(
         type     => $type,
         delim    => $delim,
         start    => $start,
         tight    => $tight,
         children => \@children,
     );
-    my $item = CommonMarkGFM->create_item(
+    my $item = CommonMark->create_item(
         children => \@children,
     );
-    my $code_block = CommonMarkGFM->create_code_block(
+    my $code_block = CommonMark->create_code_block(
         fence_info => $fence_info,
         literal    => $literal,
     );
-    my $html = CommonMarkGFM->create_html_block(
+    my $html = CommonMark->create_html_block(
         literal => $html,
     );
-    my $custom_block = CommonMarkGFM->create_custom_block(
+    my $custom_block = CommonMark->create_custom_block(
         on_enter => $raw_prefix,
         on_exit  => $raw_suffix,
         children => \@children,
         text     => $literal,
     );
-    my $thematic_break = CommonMarkGFM->create_thematic_break;
-    my $text = CommonMarkGFM->create_text(
+    my $thematic_break = CommonMark->create_thematic_break;
+    my $text = CommonMark->create_text(
         literal => $literal,
     );
-    my $code = CommonMarkGFM->create_code(
+    my $code = CommonMark->create_code(
         literal => $literal,
     );
-    my $html_inline = CommonMarkGFM->create_html_inline(
+    my $html_inline = CommonMark->create_html_inline(
         literal => $literal,
     );
-    my $emph = CommonMarkGFM->create_emph(
+    my $emph = CommonMark->create_emph(
         children => \@children,
         text     => $literal,
     );
-    my $strong = CommonMarkGFM->create_strong(
+    my $strong = CommonMark->create_strong(
         children => \@children,
         text     => $literal,
     );
-    my $url = CommonMarkGFM->create_url(
+    my $url = CommonMark->create_url(
         url      => $url,
         title    => $title,
         children => \@children,
         text     => $literal,
     );
-    my $image = CommonMarkGFM->create_image(
+    my $image = CommonMark->create_image(
         url      => $url,
         title    => $title,
         children => \@children,
         text     => $literal,
     );
-    my $custom_inline = CommonMarkGFM->create_custom_inline(
+    my $custom_inline = CommonMark->create_custom_inline(
         on_enter => $raw_prefix,
         on_exit  => $raw_suffix,
         children => \@children,
         text     => $literal,
     );
-    my $softbreak = CommonMarkGFM->create_softbreak;
-    my $linebreak = CommonMarkGFM->create_linebreak;
+    my $softbreak = CommonMark->create_softbreak;
+    my $linebreak = CommonMark->create_linebreak;
 
 These convenience functions can be used to create nodes, set properties,
 and add children in a single operation. All parameters are optional.
@@ -246,10 +246,10 @@ parameters correspond to a node property.
 
 =head2 libcmark version information
 
-    my $version = CommonMarkGFM->version;
-    my $string  = CommonMarkGFM->version_string;
-    my $version = CommonMarkGFM->compile_time_version;
-    my $string  = CommonMarkGFM->compile_time_version_string;
+    my $version = CommonMark->version;
+    my $string  = CommonMark->version_string;
+    my $version = CommonMark->compile_time_version;
+    my $string  = CommonMark->compile_time_version_string;
 
 Return the version number or version string of libcmark, either the
 library version linked against at run time or compile time.

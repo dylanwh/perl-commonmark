@@ -4,7 +4,7 @@ use warnings;
 use Test::More tests => 132;
 
 BEGIN {
-    use_ok('CommonMarkGFM', ':node', ':event');
+    use_ok('CommonMark', ':node', ':event');
 }
 
 my $md = <<EOF;
@@ -13,8 +13,8 @@ my $md = <<EOF;
 - Item 2
 EOF
 
-my $doc = CommonMarkGFM->parse_document($md);
-isa_ok($doc, 'CommonMarkGFM::Node', 'parse_document');
+my $doc = CommonMark->parse_document($md);
+isa_ok($doc, 'CommonMark::Node', 'parse_document');
 
 my @expected_events = (
     [ EVENT_ENTER, NODE_DOCUMENT  ],
@@ -46,7 +46,7 @@ my @expected_events = (
 
 {
     my $iter = $doc->iterator;
-    isa_ok($iter, 'CommonMarkGFM::Iterator', 'iterator');
+    isa_ok($iter, 'CommonMark::Iterator', 'iterator');
 
     for (my $i = 0; $i < @expected_events; ++$i) {
         my ($ev_type, $node) = $iter->next;
@@ -83,7 +83,7 @@ my @expected_events = (
     # Make sure iterator survives destruction of document.
     $doc  = undef;
     # Cause some allocations.
-    CommonMarkGFM->parse_document($md)
+    CommonMark->parse_document($md)
         for 1..5;
 
     my $num  = 0;
@@ -94,7 +94,7 @@ my @expected_events = (
 
     $iter = undef;
     # Cause some allocations.
-    CommonMarkGFM->parse_document($md)
+    CommonMark->parse_document($md)
         for 1..5;
 
     my $literal = $strong->first_child->get_literal;

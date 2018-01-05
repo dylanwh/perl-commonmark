@@ -1,10 +1,10 @@
 =head1 NAME
 
-CommonMarkGFM::Iterator - Iterate CommonMarkGFM nodes
+CommonMark::Iterator - Iterate CommonMark nodes
 
 =head1 SYNOPSIS
 
-    use CommonMarkGFM qw(:node :event);
+    use CommonMark qw(:node :event);
 
     my $iter = $doc->iterator;
 
@@ -26,7 +26,7 @@ CommonMarkGFM::Iterator - Iterate CommonMarkGFM nodes
 
 =head1 DESCRIPTION
 
-C<CommonMarkGFM::Iterator> provides a convenient way to walk through the nodes
+C<CommonMark::Iterator> provides a convenient way to walk through the nodes
 in a parse tree.
 
 =head2 Construction
@@ -48,13 +48,13 @@ type and the new current node.
 
 Event types are:
 
-    CommonMarkGFM::EVENT_DONE
-    CommonMarkGFM::EVENT_ENTER
-    CommonMarkGFM::EVENT_EXIT
+    CommonMark::EVENT_DONE
+    CommonMark::EVENT_ENTER
+    CommonMark::EVENT_EXIT
 
-Event types can be imported from L<CommonMarkGFM> with tag C<event>.
+Event types can be imported from L<CommonMark> with tag C<event>.
 
-    use CommonMarkGFM qw(:event);
+    use CommonMark qw(:event);
 
 The iterator starts by visiting the root node. Every visited node C<V>
 generates the following sequence of events.
@@ -63,7 +63,7 @@ generates the following sequence of events.
 
 =item *
 
-Enter the node. The event type is C<CommonMarkGFM::EVENT_ENTER> and the current
+Enter the node. The event type is C<CommonMark::EVENT_ENTER> and the current
 node is set to the entered node C<V>.
 
 =item *
@@ -74,27 +74,27 @@ of events recursively.
 =item *
 
 Except for leaf nodes, exit the node. The event type is
-C<CommonMarkGFM::EVENT_EXIT> and the current node is set to the original node
+C<CommonMark::EVENT_EXIT> and the current node is set to the original node
 C<V>.
 
 =back
 
 After the root node was exited, the event type is set to
-C<CommonMarkGFM::EVENT_DONE> and the current node to C<undef>. In scalar
-context, C<next> returns C<CommonMarkGFM::EVENT_DONE>. In list context, it
+C<CommonMark::EVENT_DONE> and the current node to C<undef>. In scalar
+context, C<next> returns C<CommonMark::EVENT_DONE>. In list context, it
 returns the empty list.
 
 For leaf nodes, no exit events are generated. Leaf nodes comprise the node
 types that never have children:
 
-    CommonMarkGFM::NODE_HTML
-    CommonMarkGFM::NODE_HRULE
-    CommonMarkGFM::NODE_CODE_BLOCK
-    CommonMarkGFM::NODE_TEXT
-    CommonMarkGFM::NODE_SOFTBREAK
-    CommonMarkGFM::NODE_LINEBREAK
-    CommonMarkGFM::NODE_CODE
-    CommonMarkGFM::NODE_INLINE_HTML
+    CommonMark::NODE_HTML
+    CommonMark::NODE_HRULE
+    CommonMark::NODE_CODE_BLOCK
+    CommonMark::NODE_TEXT
+    CommonMark::NODE_SOFTBREAK
+    CommonMark::NODE_LINEBREAK
+    CommonMark::NODE_CODE
+    CommonMark::NODE_INLINE_HTML
 
 For other node types, an exit event is generated even if the node has no
 children.

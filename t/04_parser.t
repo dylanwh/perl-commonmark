@@ -4,18 +4,18 @@ use warnings;
 use Test::More tests => 4;
 
 BEGIN {
-    use_ok('CommonMarkGFM');
+    use_ok('CommonMark');
 }
 
-my $parser = CommonMarkGFM::Parser->new;
-isa_ok($parser, 'CommonMarkGFM::Parser', 'Parser->new');
+my $parser = CommonMark::Parser->new;
+isa_ok($parser, 'CommonMark::Parser', 'Parser->new');
 
 $parser->feed("normal *em");
 $parser->feed("ph*\n\n**strong**\n\n> blo");
 $parser->feed("ck\n> quote\n");
 
 my $doc = $parser->finish;
-isa_ok($doc, 'CommonMarkGFM::Node', 'finish');
+isa_ok($doc, 'CommonMark::Node', 'finish');
 
 my $expected_html = <<'EOF';
 <p>normal <em>emph</em></p>

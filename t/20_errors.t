@@ -5,7 +5,7 @@ use Symbol;
 use Test::More tests => 9;
 
 BEGIN {
-    use_ok('CommonMarkGFM');
+    use_ok('CommonMark');
 }
 
 {
@@ -16,7 +16,7 @@ BEGIN {
 my $handle = Symbol::gensym;
 tie *$handle, 'MyHandle';
 eval {
-    CommonMarkGFM->parse_file(*$handle);
+    CommonMark->parse_file(*$handle);
 };
 like($@, qr/parse_file: file is not a file handle/,
      'parse_file with tied handle dies');
@@ -28,12 +28,12 @@ like($@, qr/parse_file: file is not a file handle/,
 
 my $obj = MyClass->new;
 eval {
-    CommonMarkGFM::Node::get_type($obj);
+    CommonMark::Node::get_type($obj);
 };
-like($@, qr/get_type: node is not of type CommonMarkGFM::Node/,
+like($@, qr/get_type: node is not of type CommonMark::Node/,
      'get_type on wrong class dies');
 
-my $doc       = CommonMarkGFM->parse_document('*text*');
+my $doc       = CommonMark->parse_document('*text*');
 my $paragraph = $doc->first_child;
 my $emph      = $paragraph->first_child;
 my $text      = $emph->first_child;
@@ -54,9 +54,9 @@ eval {
 like($@, qr/set_url: invalid operation/, 'set_url dies');
 
 eval {
-    my $paragraph = CommonMarkGFM->create_paragraph(
+    my $paragraph = CommonMark->create_paragraph(
         children => [
-            CommonMarkGFM->create_text(literal => 'text'),
+            CommonMark->create_text(literal => 'text'),
         ],
         text => 'text',
     );
@@ -65,12 +65,12 @@ like($@, qr/can't set both children and text/,
      'create_text with children and text');
 
 eval {
-    my $doc = CommonMarkGFM->parse(smart => 1);
+    my $doc = CommonMark->parse(smart => 1);
 };
 like($@, qr/must provide either string or file/, 'parse without input');
 
 eval {
-    my $doc = CommonMarkGFM->parse(string => 'md', file => \*STDIN);
+    my $doc = CommonMark->parse(string => 'md', file => \*STDIN);
 };
 like($@, qr/can't provide both string and file/, 'parse with string and file');
 
