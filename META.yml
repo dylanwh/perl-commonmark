@@ -6,6 +6,7 @@ build_requires:
   Encode: '0'
   Test::More: '0'
 configure_requires:
+  Alien::Base::Wrapper: '1.02'
   Alien::Libcmark_gfm: '0'
   ExtUtils::MakeMaker: '0'
 dynamic_config: 0
