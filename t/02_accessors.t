@@ -4,16 +4,16 @@ use warnings;
 use Test::More tests => 28;
 
 BEGIN {
-    use_ok('CommonMark', ':all');
+    use_ok('CommonMarkGFM', ':all');
 }
 
 my $filename = 't/files/test.md';
 open(my $file, '<', $filename)
     or die("$filename: $!");
-my $doc = CommonMark->parse_file($file);
+my $doc = CommonMarkGFM->parse_file($file);
 close($file);
 
-isa_ok($doc, 'CommonMark::Node', 'parse_file');
+isa_ok($doc, 'CommonMarkGFM::Node', 'parse_file');
 
 my $header = $doc->first_child;
 is($header->get_type, NODE_HEADER, 'get_type');
@@ -61,9 +61,9 @@ $link->set_title('new title');
 is($link->get_title, 'new title', 'set_title works');
 
 SKIP: {
-    skip('Requires libcmark 0.23', 2) if CommonMark->version < 0x001700;
+    skip('Requires libcmark 0.23', 2) if CommonMarkGFM->version < 0x001700;
 
-    my $custom = CommonMark::Node->new(NODE_CUSTOM_INLINE);
+    my $custom = CommonMarkGFM::Node->new(NODE_CUSTOM_INLINE);
     $custom->set_on_enter('prefix');
     is($custom->get_on_enter, 'prefix', 'get/set on_enter');
     $custom->set_on_exit('suffix');

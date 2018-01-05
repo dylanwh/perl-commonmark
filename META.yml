@@ -1,5 +1,5 @@
 ---
-abstract: 'Interface to the CommonMark C library'
+abstract: 'Interface to the CommonMarkGFM C library'
 author:
   - 'Nick Wellnhofer <wellnhofer@aevum.de>'
 build_requires:
@@ -14,7 +14,7 @@ license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
-name: CommonMark
+name: CommonMarkGFM
 requires:
   perl: '5.008'
 resources:

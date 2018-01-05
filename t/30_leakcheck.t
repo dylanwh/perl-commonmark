@@ -7,14 +7,14 @@ use Test::More HAS_LEAKTRACE ?
     (skip_all => 'require Test::LeakTrace');
 use Test::LeakTrace;
 
-use CommonMark qw(:node :event);
+use CommonMarkGFM qw(:node :event);
 
 my $md = <<EOF;
 normal, *emph*, **strong**
 EOF
 
 sub tree_manip {
-    my $doc       = CommonMark->parse_document($md);
+    my $doc       = CommonMarkGFM->parse_document($md);
     my $paragraph = $doc->first_child;
     my $text      = $paragraph->first_child;
     my $emph      = $text->next;
@@ -23,7 +23,7 @@ sub tree_manip {
 
     $doc = undef;
 
-    my $result = CommonMark::Node->new(NODE_DOCUMENT);
+    my $result = CommonMarkGFM::Node->new(NODE_DOCUMENT);
     $text->unlink;
     $strong->unlink;
     $result->append_child($paragraph);
@@ -34,7 +34,7 @@ sub tree_manip {
 }
 
 sub iterate_list_context {
-    my $doc  = CommonMark->parse_document($md);
+    my $doc  = CommonMarkGFM->parse_document($md);
     my $iter = $doc->iterator;
     my $sum  = 0;
     while (my ($ev_type, $node) = $iter->next) {
@@ -44,7 +44,7 @@ sub iterate_list_context {
 }
 
 sub iterate_scalar_context {
-    my $doc  = CommonMark->parse_document($md);
+    my $doc  = CommonMarkGFM->parse_document($md);
     my $iter = $doc->iterator;
     my $sum  = 0;
     while ((my $ev_type = $iter->next) != EVENT_DONE) {
@@ -54,7 +54,7 @@ sub iterate_scalar_context {
 }
 
 sub aborted_iteration {
-    my $doc  = CommonMark->parse_document($md);
+    my $doc  = CommonMarkGFM->parse_document($md);
     my $iter = $doc->iterator;
     my ($ev_type, $node);
     $ev_type = $iter->next;
@@ -64,7 +64,7 @@ sub aborted_iteration {
 }
 
 sub parser {
-    my $parser = CommonMark::Parser->new;
+    my $parser = CommonMarkGFM::Parser->new;
     $parser->feed("paragraph\n\n")
         for 1..5;
     $parser->finish;

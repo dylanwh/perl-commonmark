@@ -103,7 +103,7 @@ S_create_or_incref_node_sv(pTHX_ cmark_node *node) {
         PL_sv_objcount++;
 #endif
         SvUPGRADE(obj, SVt_PVMG);
-        stash = gv_stashpvn("CommonMark::Node", 16, GV_ADD);
+        stash = gv_stashpvn("CommonMarkGFM::Node", 16, GV_ADD);
         SvSTASH_set(obj, (HV*)SvREFCNT_inc(stash));
 
         /* Recurse into parent. */
@@ -170,7 +170,7 @@ S_sv2c(pTHX_ SV *sv, const char *class_name, STRLEN len, CV *cv,
 }
 
 
-MODULE = CommonMark  PACKAGE = CommonMark  PREFIX = cmark_
+MODULE = CommonMarkGFM  PACKAGE = CommonMarkGFM  PREFIX = cmark_
 
 PROTOTYPES: DISABLE
 
@@ -245,7 +245,7 @@ BOOT:
         };
         size_t num_constants = sizeof(constants) / sizeof(constants[0]);
         size_t i;
-        HV *stash = gv_stashpv("CommonMark", 0);
+        HV *stash = gv_stashpv("CommonMarkGFM", 0);
 
         if (cmark_version() != CMARK_VERSION) {
             warn("Compiled against libcmark %s, but runtime version is %s",
@@ -351,7 +351,7 @@ OUTPUT:
     RETVAL
 
 
-MODULE = CommonMark  PACKAGE = CommonMark::Node  PREFIX = cmark_node_
+MODULE = CommonMarkGFM  PACKAGE = CommonMarkGFM::Node  PREFIX = cmark_node_
 
 cmark_node*
 new(package, type)
@@ -513,7 +513,7 @@ INTERFACE:
     cmark_node_render_latex
 
 
-MODULE = CommonMark  PACKAGE = CommonMark::Iterator  PREFIX = cmark_iter_
+MODULE = CommonMarkGFM  PACKAGE = CommonMarkGFM::Iterator  PREFIX = cmark_iter_
 
 void
 DESTROY(cmark_iter *iter)
@@ -585,7 +585,7 @@ INIT:
     S_transfer_refcount(aTHX_ old_node, node);
 
 
-MODULE = CommonMark  PACKAGE = CommonMark::Parser  PREFIX = cmark_parser_
+MODULE = CommonMarkGFM  PACKAGE = CommonMarkGFM::Parser  PREFIX = cmark_parser_
 
 cmark_parser*
 cmark_parser_new(package, options = 0)
