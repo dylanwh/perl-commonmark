@@ -21,6 +21,8 @@
 
 #include <stdlib.h>
 #include <cmark.h>
+#include <cmark_extension_api.h>
+#include <core-extensions.h>
 
 #if CMARK_VERSION < 0x001500
   #error libcmark 0.21.0 is required.
@@ -41,6 +43,7 @@
 #define cmark_node_render_latex       cmark_render_latex
 
 /* Backward compatibility */
+
 
 #if CMARK_VERSION < 0x001700
 
@@ -103,7 +106,7 @@ S_create_or_incref_node_sv(pTHX_ cmark_node *node) {
         PL_sv_objcount++;
 #endif
         SvUPGRADE(obj, SVt_PVMG);
-        stash = gv_stashpvn("CommonMarkGFM::Node", 16, GV_ADD);
+        stash = gv_stashpvn("CommonMarkGFM::Node", 19, GV_ADD);
         SvSTASH_set(obj, (HV*)SvREFCNT_inc(stash));
 
         /* Recurse into parent. */
@@ -594,6 +597,7 @@ cmark_parser_new(package, options = 0)
 CODE:
     (void)package;
     RETVAL = cmark_parser_new(options);
+
     if (RETVAL == NULL) {
         croak("new: out of memory");
     }
@@ -613,6 +617,18 @@ PREINIT:
 CODE:
     buffer = SvPVutf8(string, len);
     cmark_parser_feed(parser, buffer, len);
+
+void cmark_parser_attach_syntax_extension(cmark_parser *parser, SV *string)
+PREINIT:
+    STRLEN len;
+    const char *buffer;
+    cmark_syntax_extension *syntax_extension;
+CODE:
+    buffer = SvPVutf8(string, len);
+    core_extensions_ensure_registered();
+    syntax_extension = cmark_find_syntax_extension(buffer);
+    if (syntax_extension)
+        cmark_parser_attach_syntax_extension(parser, syntax_extension);
 
 cmark_node*
 cmark_parser_finish(cmark_parser *parser)

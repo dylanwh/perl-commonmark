@@ -13,7 +13,7 @@ my %WriteMakefileArgs = (
   "AUTHOR" => "Nick Wellnhofer <wellnhofer\@aevum.de>",
   "CONFIGURE_REQUIRES" => {
     "Alien::Base::Wrapper" => "1.02",
-    "Alien::Libcmark_gfm" => 0,
+    "Alien::libcmark_gfm" => 0,
     "ExtUtils::MakeMaker" => 0
   },
   "DISTNAME" => "CommonMarkGFM",
@@ -37,7 +37,7 @@ my %FallbackPrereqs = (
 );
 
 # BEGIN code inserted by Dist::Zilla::Plugin::AlienBase::Wrapper
-use Alien::Base::Wrapper qw( Alien::Libcmark_gfm !export );
+use Alien::Base::Wrapper qw( Alien::libcmark_gfm !export );
 %WriteMakefileArgs = (%WriteMakefileArgs, Alien::Base::Wrapper->mm_args);
 # END code inserted by Dist::Zilla::Plugin::AlienBase::Wrapper
 
